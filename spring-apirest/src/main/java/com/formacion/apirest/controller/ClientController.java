@@ -1,5 +1,6 @@
 package com.formacion.apirest.controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -7,6 +8,7 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -158,6 +160,19 @@ public class ClientController {
 		Map<String,Object> response = new HashMap<>();
 		
 		try {
+			
+			String nombreImagenAnterior = client.getImagen();
+			
+			if(nombreImagenAnterior != null && nombreImagenAnterior.length() > 0) {
+				Path rutaImagenAnterior = Paths.get("uploads").resolve(nombreImagenAnterior).toAbsolutePath();
+				File archivoImagenAnterior = rutaImagenAnterior.toFile();
+				
+				if(archivoImagenAnterior.exists() && archivoImagenAnterior.canRead()) {
+					
+					archivoImagenAnterior.delete();
+				}
+			}
+			
 			client = servicio.deleteClient(id);
 			
 		} catch (DataAccessException e) {
@@ -180,9 +195,23 @@ public class ClientController {
 		Client client = servicio.findClientById(id);
 		
 		if(!archivo.isEmpty() && client!=null ) {
-			String nombreArchivo = archivo.getOriginalFilename();
+			//String nombreArchivo = archivo.getOriginalFilename();
+			String nombreArchivo = UUID.randomUUID().toString()+"_"+archivo.getOriginalFilename().replace(" ","");
 			Path rutaArchivo = Paths.get("uploads").resolve(nombreArchivo).toAbsolutePath();
 		
+			String nombreImagenAnterior = client.getImagen();
+			
+			if(nombreImagenAnterior != null && nombreImagenAnterior.length() > 0) {
+				Path rutaImagenAnterior = Paths.get("uploads").resolve(nombreImagenAnterior).toAbsolutePath();
+				File archivoImagenAnterior = rutaImagenAnterior.toFile();
+				
+				if(archivoImagenAnterior.exists() && archivoImagenAnterior.canRead()) {
+					
+					archivoImagenAnterior.delete();
+				}
+			}
+			
+			
 			try {
 				
 				Files.copy(archivo.getInputStream(), rutaArchivo);
@@ -193,6 +222,8 @@ public class ClientController {
 				return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);	
 			}
 		
+			
+			
 			 client.setImagen(nombreArchivo);
 			 servicio.saveClient(client);
 			 
