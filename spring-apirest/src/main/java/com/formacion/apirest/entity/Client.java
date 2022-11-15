@@ -17,13 +17,13 @@ import javax.persistence.TemporalType;
 @Table(name="clientes")
 public class Client implements Serializable{
 	
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	
 	@Column(nullable = false)
 	private String name;
+	
 	private String last_name;
 	private String email;
 	private int phone;
@@ -37,7 +37,6 @@ public class Client implements Serializable{
 	@PrePersist
 	public void prePresist() {
 		createdAt = new Date();
-		
 	}
 	
 	public long getId() {
