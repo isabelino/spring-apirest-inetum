@@ -1,0 +1,9 @@
+INSERT INTO clientes (name,last_name,email,phone,create_at) VALUES('Jose','Perez','jp@email.com',534541,'2022-11-14');
+INSERT INTO clientes (name,last_name,email,phone,create_at) VALUES('Maria','Ruiz','mr@email.com',534541,'2022-11-14');
+INSERT INTO clientes (name,last_name,email,phone,create_at) VALUES('Carlos','Leon','cl@email.com',534541,'2022-11-14');
+INSERT INTO clientes (name,last_name,email,phone,create_at) VALUES('Pedro','Sanchez','ps@email.com',534541,'2022-11-14');
+INSERT INTO clientes (name,last_name,email,phone,create_at) VALUES('Juana','Arco','ja@email.com',534541,'2022-11-14');
+INSERT INTO clientes (name,last_name,email,phone,create_at) VALUES('Luis','Yaris','ly@email.com',534541,'2022-11-14');
+INSERT INTO clientes (name,last_name,email,phone,create_at) VALUES('Tito','Ramos','tr@email.com',534541,'2022-11-14');
+INSERT INTO clientes (name,last_name,email,phone,create_at) VALUES('Juan','Casillas','jc@email.com',534541,'2022-11-14');
+INSERT INTO clientes (name,last_name,email,phone,create_at) VALUES('Josefa','Raz','jr@email.com',534541,'2022-11-14');
