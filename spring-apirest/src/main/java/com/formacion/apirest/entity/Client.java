@@ -25,13 +25,17 @@ public class Client implements Serializable{
 	private String name;
 	
 	private String last_name;
+	
+	@Column(nullable = false,unique=true)
 	private String email;
+	
 	private int phone;
 	
 	@Column(name="create_at")
 	@Temporal(TemporalType.DATE)
 	private Date createdAt;
 	
+	private String imagen;
 	
 		
 	@PrePersist
@@ -75,6 +79,17 @@ public class Client implements Serializable{
 	public void setCreatedAt(Date createdAt) {
 		this.createdAt = createdAt;
 	}
+	
+	public String getImagen() {
+		return imagen;
+	}
+
+	public void setImagen(String imagen) {
+		this.imagen = imagen;
+	}
+
+
+
 	/**
 	 * 
 	 */
