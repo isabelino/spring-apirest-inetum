@@ -136,6 +136,7 @@ public class ClientController {
 			clientUpdate.setEmail(client.getEmail());
 			clientUpdate.setPhone(client.getPhone());
 			clientUpdate.setCreatedAt(client.getCreatedAt());
+			clientUpdate.setRegion(client.getRegion());
 			
 			servicio.saveClient(clientUpdate);
 			

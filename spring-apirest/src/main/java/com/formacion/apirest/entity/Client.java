@@ -43,11 +43,13 @@ public class Client implements Serializable{
 	private String imagen;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JsonIgnoreProperties({"hibernateLazyInitializar","handler"})
+	@JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
 	@JoinColumn(name="id_regiones")
 	private Region region;
 	
 		
+	
+
 	@PrePersist
 	public void prePresist() {
 		createdAt = new Date();
@@ -97,7 +99,14 @@ public class Client implements Serializable{
 	public void setImagen(String imagen) {
 		this.imagen = imagen;
 	}
+	public Region getRegion() {
+		return region;
+	}
 
+	public void setRegion(Region region) {
+		this.region = region;
+	}
+	
 
 
 	/**
