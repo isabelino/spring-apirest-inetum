@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.formacion.apirest.entity.Client;
+import com.formacion.apirest.entity.Region;
 import com.formacion.apirest.repository.ClientRepository;
 
 @Service
@@ -42,6 +43,18 @@ public class ClientServiceImpl implements ClientService{
 		repositorio.deleteById(id);
 		
 		return client;
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public List<Region> findAllRegiones() {
+		return repositorio.findAllRegions();
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public Client findByEmailClient(String email) {
+		return repositorio.findByEmail(email);
 	}
 
 	

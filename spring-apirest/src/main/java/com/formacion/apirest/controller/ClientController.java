@@ -2,6 +2,7 @@ package com.formacion.apirest.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -11,7 +12,10 @@ import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.dao.DataAccessException;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -27,6 +31,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.formacion.apirest.entity.Client;
+import com.formacion.apirest.entity.Region;
 import com.formacion.apirest.service.ClientService;
 
 @RestController
@@ -246,4 +251,58 @@ public class ClientController {
 		
 	
 	}
+	
+	
+	@GetMapping("/clientes/img/{nombreImagen:.+}")
+	public ResponseEntity<Resource> viewImage(@PathVariable String nombreImagen){
+		
+		Path rutaArchivo = Paths.get("uploads").resolve(nombreImagen).toAbsolutePath();
+		Resource recurso = null;
+		
+		try {
+			
+			recurso = new UrlResource(rutaArchivo.toUri());
+			
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
+		
+		if(!recurso.exists() || !recurso.isReadable()) {
+			throw new RuntimeException("Error no se puede mostrar la imagen "+nombreImagen);
+		}
+		HttpHeaders cabecera = new HttpHeaders();
+		cabecera.add(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=\""+recurso.getFilename()+"\"");
+	
+		return new ResponseEntity<Resource>(recurso,cabecera,HttpStatus.OK);
+	}
+	
+	@GetMapping("/clientes/regiones")
+	public List<Region> viewRegions(){
+		return servicio.findAllRegiones();
+	}
+	@GetMapping("/clientes/email/{email}")
+	public ResponseEntity<?> viewClientEmail(@PathVariable String email) {
+		Client client = null;
+		Map<String,Object> response = new HashMap<>();
+		
+		try {
+			
+			client = servicio.findByEmailClient(email);
+			
+		} catch (DataAccessException e) {
+			response.put("mensaje", "Error al realizar consulta en base de datos");
+			response.put("error",e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
+		if(client == null) {
+			response.put("mensaje","El cliente con email:"+email+" no existe en la base de datos");
+			return new ResponseEntity<Map<String,Object>>(response,HttpStatus.NOT_FOUND);
+		}
+		
+		return new ResponseEntity<Client>(client,HttpStatus.OK);
+		
+	}
+	
+	
 }
