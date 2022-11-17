@@ -7,6 +7,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 import com.formacion.apirest.entity.Client;
 import com.formacion.apirest.entity.Region;
+import com.formacion.apirest.entity.User;
 
 @Repository
 public interface ClientRepository extends CrudRepository<Client, Long>{
@@ -17,6 +18,7 @@ public interface ClientRepository extends CrudRepository<Client, Long>{
 	//metodo para buscar todas las regiones
 	@Query("from Region")
 	public List<Region> findAllRegions();
+	
 	
 	
 }
