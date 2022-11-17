@@ -12,6 +12,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.formacion.apirest.entity.User;
 import com.formacion.apirest.repository.UserRepository;
 
@@ -27,6 +29,7 @@ public class UserService implements UserDetailsService{
 	private UserRepository userRepository;
 
 	@Override
+	@Transactional(readOnly = true)
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		User user = userRepository.findByUsername(username);
 		
@@ -37,7 +40,7 @@ public class UserService implements UserDetailsService{
 		
 		List<GrantedAuthority> authorities = user.getRoles()
 				.stream()
-				.map(role -> new SimpleGrantedAuthority(role.getName()))
+				.map(roles -> new SimpleGrantedAuthority(roles.getName()))
 				.peek(authority -> logger.info("Role: "+authority.getAuthority()))
 				.collect(Collectors.toList());
 		

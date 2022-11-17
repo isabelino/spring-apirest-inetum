@@ -16,6 +16,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 @Table(name="usuarios")
 public class User implements Serializable{
@@ -34,6 +36,7 @@ public class User implements Serializable{
 	@JoinTable(name="usuarios_roles",joinColumns = @JoinColumn(name="usuario_id"),
 	inverseJoinColumns = @JoinColumn(name="role_id"),
 	uniqueConstraints = {@UniqueConstraint(columnNames = {"usuario_id","role_id"})})
+	@JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
 	private List<Role> roles;
 	
 	
